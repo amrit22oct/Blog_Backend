@@ -41,7 +41,10 @@ app.use("/api/blogs", blogRoutes);
 app.use("/api/threads", forumRoutes);
 app.use("/api/search",searchRoutes);
 
-
+// ✅ Health check endpoint
+app.get("/api/health", (req, res) => {
+  res.status(200).json({ status: "ok", message: "Server is running" });
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
