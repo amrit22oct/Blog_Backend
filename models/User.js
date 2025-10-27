@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema(
       enum: ["superadmin", "author", "user"], // allowed roles
       default: "user", // default role
     },
+<<<<<<< HEAD
 
     // 🟢 Added call-related fields
     isOnline: { type: Boolean, default: false }, // track online status
@@ -34,6 +35,8 @@ const userSchema = new mongoose.Schema(
       duration: { type: Number }, // in seconds
       endedAt: { type: Date },
     },
+=======
+>>>>>>> 9dcec0fc076cbf516773b69ae996691f7220ecfe
   },
   { timestamps: true }
 );

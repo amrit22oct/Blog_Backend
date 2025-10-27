@@ -24,7 +24,11 @@ export const isSuperAdmin = (req,res,next) => {
     return res.status(403).json({message: "Access denied superadmin only"});
   }
   next();
+<<<<<<< HEAD
 };
 
 // ✅ Added alias for compatibility with routes using `protect`
 export const protect = authMiddleware;
+=======
+};
+>>>>>>> 9dcec0fc076cbf516773b69ae996691f7220ecfe
