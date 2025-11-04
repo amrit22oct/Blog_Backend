@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 
 const messageSchema = new mongoose.Schema(
   {
-    // 🔹 Basic message info
+    // 🔹 Chat & user info
     chatId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Chat", // link to chat room (1-on-1 or group)
+      ref: "Chat",
       required: true,
     },
     senderId: {
@@ -16,28 +16,26 @@ const messageSchema = new mongoose.Schema(
     receiverId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: false, // optional for group chats
+      required: false,
     },
 
-    // 🔹 Message type: text, image, video, audio, file, or call event
+    // 🔹 Type & content
     type: {
       type: String,
       enum: ["text", "image", "video", "audio", "file", "call"],
       default: "text",
     },
-
-    // 🔹 Message content (for text or file URL)
     content: {
       type: String,
       trim: true,
     },
 
-    // 🔹 Media metadata
+    // 🔹 Media details
     mediaUrl: { type: String },
-    mediaType: { type: String }, // e.g. "image/png", "audio/mp3"
-    mediaDuration: { type: Number }, // seconds
+    mediaType: { type: String },
+    mediaDuration: { type: Number },
 
-    // 🔹 Call info (for voice/video call events)
+    // 🔹 Call info
     callInfo: {
       isCall: { type: Boolean, default: false },
       callType: { type: String, enum: ["audio", "video"], default: null },
@@ -46,25 +44,30 @@ const messageSchema = new mongoose.Schema(
         enum: ["started", "missed", "declined", "ended"],
         default: null,
       },
-      callDuration: { type: Number }, // in seconds
+      callDuration: { type: Number },
       startedAt: { type: Date },
       endedAt: { type: Date },
     },
 
-    // 🔹 Message status (for delivery/read receipts)
+    // 🔹 Message status
     status: {
       type: String,
       enum: ["sent", "delivered", "seen"],
       default: "sent",
     },
 
-    // 🔹 Optional extra data
+    // 🔹 Optional reply reference (💬 reply to another message)
+    replyTo: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Message",
+      default: null,
+    },
+
+    // 🔹 Metadata
     meta: { type: mongoose.Schema.Types.Mixed },
   },
   { timestamps: true }
 );
 
-// ✅ Capitalize model name (Mongoose convention)
 const Message = mongoose.model("Message", messageSchema);
-
 export default Message;

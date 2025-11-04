@@ -9,6 +9,9 @@ import Forum from "../models/ForumThread.js";
 import ForumReply from "../models/ForumReply.js";
 import CommentBlog from "../models/CommentBlog.js";
 
+
+
+
 export const register = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
@@ -127,6 +130,33 @@ export const login = async (req, res) => {
     res.status(500).json({ message: "Server error", error });
   }
 };
+
+
+// controllers/userController.js
+
+export const searchUsers = async (req, res) => {
+  const keyword = req.query.search
+    ? {
+        $or: [
+          { name: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
+    : {};
+
+  try {
+    // 🔹 exclude the logged-in user from results
+    const users = await User.find(keyword).find({
+      _id: { $ne: req.user._id },
+    });
+
+    res.status(200).json(users);
+  } catch (err) {
+    console.error("❌ Error searching users:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 
 
 // Deactivate user and  deleate their posts and the comments
@@ -254,3 +284,7 @@ export const getMyDetails = async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 };
+
+
+
+

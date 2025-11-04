@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import path from "path";
 import http from "http"; // ✅ Required for socket.io
+import { initSocket } from "./socket/socket.js"; // ✅ Socket.io config
 import { fileURLToPath } from "url";
 
 import connectDB from "./config/db.js";
@@ -15,7 +16,7 @@ import forumRoutes from "./routes/forumRoutes.js";
 import searchRoutes from "./routes/searchRoutes.js";
 import superAdminRoutes from "./routes/superAdminRoutes.js";
 import chatRoutes from "./routes/chatRoutes.js"; // ✅ You forgot this import
-import { initSocket } from "./socket/socket.js"; // ✅ Socket.io config
+
 
 // Load environment variables
 dotenv.config();
@@ -47,7 +48,7 @@ app.use("/api/chat", chatRoutes);
 const server = http.createServer(app);
 
 // ✅ Initialize Socket.io with the HTTP server
-initSocket(server);
+initSocket(server,app);
 //  checking 
 
 const PORT = process.env.PORT || 5000;
